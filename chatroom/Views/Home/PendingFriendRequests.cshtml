@@ -1,0 +1,43 @@
+﻿@model IEnumerable<chatroom.Models.FriendRequest>
+
+@{
+    ViewBag.Title = "Pending Friend Requests";
+}
+
+<h2>PendingFriendRequests</h2>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Profile Picture</th>
+                <th>@Html.DisplayNameFor(model => model.SenderName)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <img src="@Url.Content("~/ProfileP/" + item.ProfilePicture)" alt="DP" width="100" height="100" />
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.SenderName)</td>
+                <td>
+                    @using (Html.BeginForm("AcceptRequest", "Home", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.Hidden("SenderId", item.SenderId)
+                        <button type="submit" class="btn btn-success">Accept</button>
+                    }
+                    @using (Html.BeginForm("RejectRequest", "Home", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.Hidden("SenderId", item.SenderId)
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    }
+                    @Html.ActionLink("Profile", "Profile_Details", new { id = item.SenderId }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Chatroom</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Home/My_Profile">Chatroom</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/My_Profile" title="My Profile">
+                                     <i class="fa-solid fa-user" ></i>                         
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/Home/GetAllUsers" title="All Users">
+                                <i class="fa-solid fa-users"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Chats" title="Chats">
+                                <i class="fa-solid fa-message"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="/Home/Friends_List" title="Friends List">
+                                <i class="fa-solid fa-user-group"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/PendingFriendRequests" title="Friend Requests">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Logout">LogOut</a>
+                        </li>
+                        @*<form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search friends" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>*@
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/About">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Contact">Contact</a>
+                        </li>
+
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p><i class="fa-solid fa-person-hiking"></i>&copy; @DateTime.Now.Year - ChatRoom</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+    <script>
+        document.querySelectorAll(".nav-link").forEach((link) => {
+            if (link.href === window.location.href) {
+                link.classList.add("active");
+                link.setAttribute("aria-current", "page");
+            }
+        });
+    </script>
+</body>
+</html>
+

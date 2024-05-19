@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="chatroomModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="FriendRequests">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderId" Type="Int32" Nullable="false" />
+    <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfilePicture" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Messages">
+    <Key>
+      <PropertyRef Name="MessageId" />
+    </Key>
+    <Property Name="MessageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderId" Type="Int32" Nullable="false" />
+    <Property Name="RecieverId" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SenderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiverName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserData" Relationship="Self.FK_Messages_UserData" FromRole="Messages" ToRole="UserData" />
+    <NavigationProperty Name="UserData1" Relationship="Self.FK_Messages_UserData1" FromRole="Messages" ToRole="UserData" />
+  </EntityType>
+  <EntityType Name="UserData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProfilePicture" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_UserData" FromRole="UserData" ToRole="Messages" />
+    <NavigationProperty Name="Messages1" Relationship="Self.FK_Messages_UserData1" FromRole="UserData" ToRole="Messages" />
+  </EntityType>
+  <Association Name="FK_Messages_UserData">
+    <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserData">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="RecieverId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_UserData1">
+    <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserData">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="SenderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="chatroomEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="FriendRequests" EntityType="Self.FriendRequests" />
+    <EntitySet Name="Messages" EntityType="Self.Messages" />
+    <EntitySet Name="UserData" EntityType="Self.UserData" />
+    <AssociationSet Name="FK_Messages_UserData" Association="Self.FK_Messages_UserData">
+      <End Role="UserData" EntitySet="UserData" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_UserData1" Association="Self.FK_Messages_UserData1">
+      <End Role="UserData" EntitySet="UserData" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

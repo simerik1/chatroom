@@ -1,0 +1,75 @@
+﻿@model chatroom.Models.UsersModel
+
+@{
+    ViewBag.Title = "Profile_Details";
+}
+
+<h2>Profile Details</h2>
+<head>
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    <img src="@Url.Content("~/ProfileP/" + Model.ProfilePicture)" alt="DP" class="img-fluid" />
+
+                </dt>
+                </dl>
+            <dl>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Email) 
+                </dd>
+            </dl>
+            <form action="/Home/SendMessage" method="post">
+                <input type="hidden" name="RecieverId" value="@Model.Id" />
+                <div class="mb-3">
+                    <label for="content" class="form-label">Message Content:</label>
+                    <textarea class="form-control" id="content" name="Content" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+    <p>
+        @using (Html.BeginForm("SendFriendRequest", "Home", FormMethod.Post))
+        {
+            @Html.Hidden("receiverId", Model.Id)
+            <button type="submit" class="btn btn-success">
+            Send Request
+            </button>
+        }
+        @Html.ActionLink("Back to List", "GetAllUsers", null, new { @class = "btn btn-secondary" })
+    </p>
+</div>

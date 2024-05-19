@@ -1,0 +1,30 @@
+﻿@model IEnumerable<chatroom.Models.Message>
+
+@{ ViewBag.Title = "Chats"; }
+<head>
+    <link href="~/Content/Chatbox.css" rel="stylesheet" />
+</head>
+
+<h2>Chats</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="chat-box">
+                @foreach (var item in Model)
+                {
+    <div class="message">
+        <div class="message-header">
+            <span class="sender">@Html.DisplayFor(modelItem => item.SenderName)</span>
+            <span class="timestamp">@Html.DisplayFor(modelItem => item.TimeStamp)</span>
+        </div>
+        <div class="message-content">
+            @Html.DisplayFor(modelItem => item.Content)
+        </div>
+        <a href="@Url.Action("ChatDetails", "Home", new {chatId = item.RecieverId})" class="btn btn-primary">Open Chat</a>
+    </div>}
+            </div>
+        </div>
+    </div>
+</div>
+

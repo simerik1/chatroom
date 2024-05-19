@@ -1,0 +1,42 @@
+﻿@model IEnumerable<chatroom.Models.Message>
+
+@{ ViewBag.Title = "ChatDetails"; }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="text-center">ChatDetails</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model)
+                            {
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0"><strong>@item.SenderName</strong></p>
+                            <p>@item.Content</p>
+                        </div>
+                        <small>@item.TimeStamp.ToString("HH:mm")</small>
+                    </div>
+                </li>}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

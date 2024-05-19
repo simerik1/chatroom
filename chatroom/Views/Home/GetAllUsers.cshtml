@@ -1,0 +1,39 @@
+﻿@model IEnumerable<chatroom.Models.UsersModel>
+
+@{
+    ViewBag.Title = "GetAllUsers";
+}
+
+<h2>People you may know</h2>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Profile Picture</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Content("~/ProfileP/" + item.ProfilePicture)" alt="DP" width="100" height="100" />
+                    </td>
+                    <td>
+                        @Html.Raw(item.FirstName + " " + item.LastName)
+                    </td>
+                    <td>
+                        <form method="post" action="@Url.Action("SendFriendRequest", "Home")">
+                            <input type="hidden" name="receiverId" value="@item.Id" />
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                        </form>
+                        <a href="@Url.Action("Profile_Details", new { id = item.Id })" class="btn btn-secondary">Profile Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

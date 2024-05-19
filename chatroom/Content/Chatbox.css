@@ -1,0 +1,39 @@
+﻿.chat-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.message {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.sender {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.timestamp {
+    color: #888;
+}
+
+.message-content {
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #1877f2;
+    border-color: #1877f2;
+}
+ .btn-primary:hover {
+        background-color: #166fe5;
+        border-color: #166fe5;
+    }
