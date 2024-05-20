@@ -340,7 +340,7 @@ namespace chatroom.Controllers
        
         public ActionResult ChatDetails(int chatId)
         {
-            int userId = 0;
+            int userId = 0; 
             string person = User.Identity.Name;
             string[] parts = person.Split('^');
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
