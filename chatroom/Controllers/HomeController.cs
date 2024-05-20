@@ -281,9 +281,12 @@ namespace chatroom.Controllers
             string[] parts = person.Split('^');
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
+                ViewBag.UserId = userId;
                 var chats = UserRepository.Chats(userId);
-                return View(chats);
+                var filteredChats =chats.Where(c => c.SenderId != userId && c.RecieverId != userId).ToList();
+                return View(filteredChats);
             }
+           
             else
             {
                 ViewBag.ErrorMessage = "Invalid user format.";
@@ -305,13 +308,15 @@ namespace chatroom.Controllers
                     TempData["ErrorMessage"] = "You cannot send a message to yourself.";
                     return RedirectToAction("Chats", "Home");
                 }
+               
 
                 var message = new Messages
                 {
                     SenderId = senderId,
                     RecieverId = RecieverId,
                     Content = Content,
-                    TimeStamp = DateTime.Now
+                    TimeStamp = DateTime.Now,
+                    
                 };
 
                 bool messageSent = UserRepository.SendMessage(message);
@@ -341,6 +346,7 @@ namespace chatroom.Controllers
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
                 var chats = UserRepository.UserChat(userId, chatId);
+                ViewBag.ChatId = chatId;
                 return View(chats);
             }
             else
