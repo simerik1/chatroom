@@ -347,6 +347,7 @@ namespace chatroom.Controllers
             {
                 var chats = UserRepository.UserChat(userId, chatId);
                 ViewBag.ChatId = chatId;
+                ViewBag.RecieverName = UserRepository.GetUserById(chatId).FirstName.ToUpper() + " "+ UserRepository.GetUserById(chatId).LastName.ToUpper();
                 return View(chats);
             }
             else

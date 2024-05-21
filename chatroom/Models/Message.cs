@@ -14,6 +14,6 @@ namespace chatroom.Models
         public System.DateTime TimeStamp { get; set; }
         public string SenderName { get; set;}
         public string ReceiverName { get; set; }
-
+        public bool IsSent { get; set; }
     }
 }

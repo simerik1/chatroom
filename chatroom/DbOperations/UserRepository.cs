@@ -238,14 +238,18 @@ namespace chatroom.DbOperations
                 {
                     var sender = GetUserById(chat.SenderId);
                     var receiver = GetUserById(chat.RecieverId);
+                    bool isSent = chat.SenderId == userId;
+
                     if (sender != null && receiver != null)
                     {
                         var message = new Message
                         {
-                            SenderName = sender.FirstName + " " + sender.LastName,
-                            ReceiverName = receiver.FirstName + " " + receiver.LastName,
+                            SenderName = isSent ? sender.FirstName + " " + sender.LastName : receiver.FirstName + " " + receiver.LastName,
+                            ReceiverName = isSent ? receiver.FirstName + " " + receiver.LastName : sender.FirstName + " " + sender.LastName,
                             Content = chat.Content,
-                            TimeStamp = chat.TimeStamp
+                            TimeStamp = chat.TimeStamp,
+                            IsSent = isSent
+
                         };
                         result.Add(message);
                     }

@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<chatroom.Models.Message>
 
-
-@{ ViewBag.Title = "ChatDetails"; }
+@{
+    ViewBag.Title = "ChatDetails";
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,48 +11,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/Content/message.css" rel="stylesheet" />
+    <style>
+        body{
+            background-color:aquamarine
+        }
+        .chat-container {
+            height: calc(80vh - 60px); 
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+
+        .message-input {
+            position: center;
+            @*bottom: 0;*@
+            @*width: 100%;*@
+            background-color: aquamarine;
+            padding: 10px 100px 10px 480px;
+            @*border-top: 1px solid #ddd;*@
+        }
+
+        #messageContent {
+            width: calc(100% - 50px);
+            resize: none;
+            height: 40px;
+            border: none;
+            border-radius: 20px;
+            padding: 10px;
+            outline: none;
+        }
+
+        #sendMessageBtn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+            #sendMessageBtn:focus {
+                outline: none;
+            }
+
+        .chat-row {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .chat-bubble {
+            max-width: 70%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            word-wrap: break-word;
+        }
+
+        .sent {
+            background-color: #DCF8C6;
+            margin-left: auto; 
+        }
+
+        .received {
+            background-color: #E0E0E0;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container mt-5">
-        <h2 class="text-center">Chat Details</h2>
+        <h2 class="text-center">@ViewBag.RecieverName</h2>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            @foreach (var item in Model)
-                            {
-                <li class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="mb-0"><strong>@item.SenderName</strong></p>
-                            <p>@item.Content</p>
-                        </div>
-                        <small>@item.TimeStamp.ToString()</small>
-                    </div>
-                </li>
-}
-
-                        </ul>
+                    <div class="card-body chat-container">
+                        @foreach (var item in Model)
+                        {
+                            <div class="chat-row">
+                                <div class="message chat-bubble @if (item.IsSent) { <text>sent</text> } else { <text>received</text> }">
+                                    @*<p class="message-content"><strong>@item.ReceiverName</strong></p>*@
+                                    <p class="message-content">@item.Content</p>
+                                    <p class="message-time">@item.TimeStamp.ToString()</p>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <form action="/Home/SendMessage" method="post">
-        <input type="hidden" name="RecieverId" value="@ViewBag.chatId" />
-        <div class="mb-3">
-            <label for="content" class="form-label">Message Content:</label>
 
-            <textarea class="form-control" id="messageContent" name="Content" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-    </form>
+    <div class="message-input">
+        <form action="/Home/SendMessage" method="post" class="d-flex align-items-center">
+            <input type="hidden" name="RecieverId" value="@ViewBag.chatId" />
+            <input type="text" class="form-control" id="messageContent" name="Content" placeholder="Type a message..." required>
+            <button id="sendMessageBtn" type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
 
-    
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha384-wkqdq7jSxIMbZkGlmr3GpFeYb0UnxyRg1w6Kwz18kXv4y4c8XvcTMEWsV7T6ivj6" crossorigin="anonymous"></script>
 </body>
 </html>
