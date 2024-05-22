@@ -29,7 +29,7 @@
                     {
                         <li class="nav-item">
                             <a class="nav-link" href="/Home/My_Profile" title="My Profile">
-                                     <i class="fa-solid fa-user" ></i>                         
+                                <i class="fa-solid fa-user"></i>
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -57,9 +57,9 @@
                             <a class="nav-link" href="/Account/Logout">LogOut</a>
                         </li>
                         @*<form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search friends" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>*@
+                                <input class="form-control me-2" type="search" placeholder="Search friends" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>*@
                     }
                     else
                     {
@@ -76,6 +76,8 @@
             </div>
         </div>
     </nav>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -84,8 +86,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
+
     <script>
         document.querySelectorAll(".nav-link").forEach((link) => {
             if (link.href === window.location.href) {
@@ -94,6 +95,7 @@
             }
         });
     </script>
+    
 </body>
 </html>
 

@@ -208,7 +208,8 @@ namespace chatroom.DbOperations
                             ReceiverName = receiver.FirstName + " " + receiver.LastName,
                             Content = message.Content,
                             TimeStamp = message.TimeStamp,
-                            RecieverId = message.RecieverId
+                            RecieverId = message.RecieverId,
+                            ProfilePicture = receiver.ProfilePicture
                         };
                         result.Add(chat);
                     }

@@ -1,30 +1,130 @@
 ﻿@model IEnumerable<chatroom.Models.Message>
 
 @{ ViewBag.Title = "Chats"; }
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link href="~/Content/Chatbox.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        footer {
+            visibility: collapse;
+        }
+
+        body {
+            background-color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .chat-list {
+            width: 30%;
+            overflow-y: auto;
+            border-right: 2px solid #077be8;
+            padding-right: 10px;
+        }
+
+        .chat-details {
+            width: 68%;
+            padding-left: 10px;
+        }
+
+        .chat-box {
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        .chat-container {
+            height: calc(80vh - 100px);
+            overflow-y: auto;
+            padding-bottom: 10px;
+            border: 2px solid #077be8;
+        }
+
+        .message-input {
+            padding: 10px 0;
+            border-top: 2px solid #077be8;
+        }
+
+        .message {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .message:hover {
+                background-color: #f2f2f2;
+            }
+
+            .message:active {
+                background-color: #e2e2e2;
+            }
+    </style>
 </head>
+<body> 
 
-<h2>Chats</h2>
-
-<div class="container">
-    <div class="row">
-        <div class="col">
+    <div class="container">
+        <div class="chat-list">
+            <h2>Chats</h2>
             <div class="chat-box">
                 @foreach (var item in Model)
                 {
-    <div class="message">
-        <div class="message-header">
-            <span class="sender">@Html.DisplayFor(modelItem => item.ReceiverName)</span>
-            <span class="timestamp">@Html.DisplayFor(modelItem => item.TimeStamp)</span>
+                    <a href="#" class="open-chat message" data-chat-id="@item.RecieverId">
+                        <div class="message-header">
+                            <img src="@Url.Content("~/ProfileP/" + item.ProfilePicture)" alt="DP" width="80" height="80" style="border-radius:50px;" />
+                            <strong>@Html.DisplayFor(modelItem => item.ReceiverName)</strong>
+                            <br />
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </div>
+                    </a>
+                }
+            </div>
         </div>
-        <div class="message-content">
-            @Html.DisplayFor(modelItem => item.Content)
-        </div>
-        <a href="@Url.Action("ChatDetails", "Home", new {chatId = item.RecieverId})" class="btn btn-primary">Open Chat</a>
-    </div>}
+
+
+        <div class="chat-details">
+            <div id="chatDetailsPlaceholder">
             </div>
         </div>
     </div>
-</div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.open-chat').click(function (e) {
+                e.preventDefault();
+                var chatId = $(this).data('chat-id');
+                $.ajax({
+                    url: '/Home/ChatDetails',
+                    type: 'GET',
+                    data: { chatId: chatId },
+                    success: function (response) {
+                        $('#chatDetailsPlaceholder').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('.message').click(function (e) {
+                e.preventDefault();
+                $('.message.active').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+
+      
+    </script>
+</body>
+</html>

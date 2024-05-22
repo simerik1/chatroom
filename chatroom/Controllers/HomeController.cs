@@ -284,6 +284,7 @@ namespace chatroom.Controllers
                 ViewBag.UserId = userId;
                 var chats = UserRepository.Chats(userId);
                 var filteredChats =chats.Where(c => c.SenderId != userId && c.RecieverId != userId).ToList();
+               
                 return View(filteredChats);
             }
            
@@ -347,6 +348,8 @@ namespace chatroom.Controllers
             {
                 var chats = UserRepository.UserChat(userId, chatId);
                 ViewBag.ChatId = chatId;
+                //TempData["PP"] = UserRepository.GetUserById(chatId).ProfilePicture;
+
                 ViewBag.RecieverName = UserRepository.GetUserById(chatId).FirstName.ToUpper() + " "+ UserRepository.GetUserById(chatId).LastName.ToUpper();
                 return View(chats);
             }

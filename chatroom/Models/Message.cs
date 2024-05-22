@@ -15,5 +15,6 @@ namespace chatroom.Models
         public string SenderName { get; set;}
         public string ReceiverName { get; set; }
         public bool IsSent { get; set; }
+        public string ProfilePicture { get; set; }
     }
 }

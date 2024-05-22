@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<chatroom.Models.Message>
 
 @{
-    ViewBag.Title = "ChatDetails";
+    Layout = "";
 }
 
 <!DOCTYPE html>
@@ -12,21 +12,22 @@
     <title>@ViewBag.Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body{
-            background-color:aquamarine
+        body {
+            @*background-color: aquamarine;*@
         }
         .chat-container {
-            height: calc(80vh - 60px); 
+            height: calc(80vh - 60px);
             overflow-y: auto;
             padding-bottom: 10px;
+            border: 2px solid #077be8;
+            border-radius:10px;
         }
 
         .message-input {
             position: center;
             @*bottom: 0;*@
-            @*width: 100%;*@
-            background-color: aquamarine;
-            padding: 10px 100px 10px 480px;
+            width: 100%;
+            padding: 10px 100px 10px 170px;
             @*border-top: 1px solid #ddd;*@
         }
 
@@ -34,7 +35,7 @@
             width: calc(100% - 50px);
             resize: none;
             height: 40px;
-            border: none;
+            border: 5px solid #077be8;
             border-radius: 20px;
             padding: 10px;
             outline: none;
@@ -69,8 +70,8 @@
         }
 
         .sent {
-            background-color: #DCF8C6;
-            margin-left: auto; 
+            background-color:deepskyblue;
+            margin-left: auto;
         }
 
         .received {
@@ -81,10 +82,10 @@
 </head>
 <body>
 
-    <div class="container mt-5">
-        <h2 class="text-center">@ViewBag.RecieverName</h2>
+    <div class="">
+        @*<h2 class="text-center" style=" background-color:white;">@ViewBag.RecieverName</h2>*@
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md">
                 <div class="card">
                     <div class="card-body chat-container">
                         @foreach (var item in Model)
