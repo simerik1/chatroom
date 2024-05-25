@@ -26,7 +26,7 @@ namespace chatroom.Controllers
             MembershipValidator validator = new MembershipValidator();
             var result = validator.Validate(model);
 
-            if(!result.IsValid)
+            if (!result.IsValid)
             {
                 foreach (var error in result.Errors)
                 {
@@ -74,8 +74,8 @@ namespace chatroom.Controllers
             }
             using (var context = new chatroomEntities())
             {
-                string extension = Path.GetExtension(user.ProfileP.FileName); 
-                string fileName = Guid.NewGuid().ToString() + extension; 
+                string extension = Path.GetExtension(user.ProfileP.FileName);
+                string fileName = Guid.NewGuid().ToString() + extension;
                 string path = Server.MapPath("~/ProfileP/");
                 string fullpath = Path.Combine(path, fileName);
                 user.ProfileP.SaveAs(fullpath);
@@ -93,33 +93,6 @@ namespace chatroom.Controllers
             return RedirectToAction("Login");
         }
 
-        //public Pagination<UserData> Test()
-        //{
-        //    using (var context = new chatroomEntities())
-        //    {
-        //        var userData = context.UserData.ToList();
-                
-        //        var result = new Pagination<UserData>();
-                
-        //        result.Records = userData;
-                
-        //        return result;
-        //    }
-        //}
-
-        //public Pagination<FriendRequests> Test2()
-        //{
-        //    using (var context = new chatroomEntities())
-        //    {
-        //        var friendRequests = context.FriendRequests.ToList();
-
-        //        var result = new Pagination<FriendRequests>();
-
-        //        result.Records = friendRequests;
-
-        //        return result;
-        //    }
-        //}
     }
 
 }

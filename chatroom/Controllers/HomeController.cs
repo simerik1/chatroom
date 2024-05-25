@@ -70,7 +70,7 @@ namespace chatroom.Controllers
                 {
                     return HttpNotFound("Receiver user not found");
                 }
-               
+
                 if (senderId == receiverId)
                 {
                     TempData["Message"] = "You cannot send a friend request to yourself.";
@@ -81,7 +81,11 @@ namespace chatroom.Controllers
                     TempData["Message"] = "You are already friends with this user.";
                     return RedirectToAction("GetAllUsers", "Home");
                 }
-
+                if (UserRepository.HasPendingFriendRequest(senderId, receiverId))
+                {
+                    TempData["Message"] = "A friend request has already been sent to this user.";
+                    return RedirectToAction("GetAllUsers", "Home");
+                }
 
 
                 UserRepository.SendFriendRequest(senderUser, receiverUser);
@@ -96,7 +100,7 @@ namespace chatroom.Controllers
 
             return RedirectToAction("GetAllUsers", "Home");
         }
-        
+
         public ActionResult PendingFriendRequests()
         {
             int userId = 0;
@@ -140,7 +144,7 @@ namespace chatroom.Controllers
                 TempData["ErrorMessage"] = "Invalid user format.";
             }
 
-            return RedirectToAction("PendingFriendRequests","Home");
+            return RedirectToAction("PendingFriendRequests", "Home");
         }
         [HttpPost]
         public ActionResult RejectRequest(int senderId)
@@ -148,7 +152,7 @@ namespace chatroom.Controllers
             int userId = 0;
             string person = User.Identity.Name;
             string[] parts = person.Split('^');
-            if(parts.Length == 2 && int.TryParse(parts[1], out userId))
+            if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
                 bool rejected = UserRepository.RejectFriendRequest(senderId, userId);
                 if (rejected)
@@ -165,7 +169,7 @@ namespace chatroom.Controllers
             {
                 TempData["ErrorMessage"] = "Invalid User Format";
             }
-            return RedirectToAction("PendingFriendRequest","Home");
+            return RedirectToAction("PendingFriendRequest", "Home");
         }
         public ActionResult Friends_List()
         {
@@ -201,9 +205,17 @@ namespace chatroom.Controllers
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
                 UserRepository userRepository = new UserRepository();
-                var befriends = userRepository.AcceptedFriendRequests(SenderId,userId);
+                var unfriended = userRepository.Unfriend(userId, SenderId);
 
-                return RedirectToAction("Friends_List","Home");
+                if (unfriended)
+                {
+                    return RedirectToAction("Friends_List", "Home");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Failed to unfriend the user.";
+                    return RedirectToAction("Friends_List", "Home");
+                }
             }
             else
             {
@@ -211,6 +223,7 @@ namespace chatroom.Controllers
                 return RedirectToAction("Friends_List", "Home");
             }
         }
+
         public ActionResult EditProfile()
         {
             int userId = 0;
@@ -218,11 +231,11 @@ namespace chatroom.Controllers
             string[] parts = person.Split('^');
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
-              
+
                 var profiled = UserRepository.GetUserById(userId);
                 return View(profiled);
             }
-            return View();           
+            return View();
         }
 
         [HttpPost]
@@ -250,11 +263,11 @@ namespace chatroom.Controllers
 
                     if (existingUserData != null)
                     {
-                       
+
                         existingUserData.FirstName = userData.FirstName;
                         existingUserData.LastName = userData.LastName;
                         existingUserData.Email = userData.Email;
-                        if (user.ProfileP != null )
+                        if (user.ProfileP != null)
                         {
                             string extension = Path.GetExtension(user.ProfileP.FileName);
                             string fileName = Guid.NewGuid().ToString() + extension;
@@ -271,9 +284,9 @@ namespace chatroom.Controllers
                         return RedirectToAction("My_Profile");
                     }
                 }
-            }           
+            }
             return RedirectToAction("My_Profile");
-        }   
+        }
         public ActionResult Chats()
         {
             int userId = 0;
@@ -283,11 +296,11 @@ namespace chatroom.Controllers
             {
                 ViewBag.UserId = userId;
                 var chats = UserRepository.Chats(userId);
-                var filteredChats =chats.Where(c => c.SenderId != userId && c.RecieverId != userId).ToList();
-               
+                var filteredChats = chats.Where(c => c.SenderId != userId && c.RecieverId != userId).ToList();
+
                 return View(filteredChats);
             }
-           
+
             else
             {
                 ViewBag.ErrorMessage = "Invalid user format.";
@@ -309,7 +322,7 @@ namespace chatroom.Controllers
                     TempData["ErrorMessage"] = "You cannot send a message to yourself.";
                     return RedirectToAction("Chats", "Home");
                 }
-               
+
 
                 var message = new Messages
                 {
@@ -317,7 +330,7 @@ namespace chatroom.Controllers
                     RecieverId = RecieverId,
                     Content = Content,
                     TimeStamp = DateTime.Now,
-                    
+
                 };
 
                 bool messageSent = UserRepository.SendMessage(message);
@@ -338,19 +351,18 @@ namespace chatroom.Controllers
 
             return RedirectToAction("Chats", "Home");
         }
-       
+
         public ActionResult ChatDetails(int chatId)
         {
-            int userId = 0; 
+            int userId = 0;
             string person = User.Identity.Name;
             string[] parts = person.Split('^');
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
                 var chats = UserRepository.UserChat(userId, chatId);
                 ViewBag.ChatId = chatId;
-                //TempData["PP"] = UserRepository.GetUserById(chatId).ProfilePicture;
 
-                ViewBag.RecieverName = UserRepository.GetUserById(chatId).FirstName.ToUpper() + " "+ UserRepository.GetUserById(chatId).LastName.ToUpper();
+                ViewBag.RecieverName = UserRepository.GetUserById(chatId).FirstName.ToUpper() + " " + UserRepository.GetUserById(chatId).LastName.ToUpper();
                 return View(chats);
             }
             else
@@ -358,7 +370,7 @@ namespace chatroom.Controllers
                 ViewBag.ErrorMessage = "Invalid user format.";
                 return View();
             }
-            
+
         }
 
     }
