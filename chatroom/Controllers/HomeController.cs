@@ -292,7 +292,7 @@ namespace chatroom.Controllers
                 ViewBag.ErrorMessage = "Invalid user format.";
                 return View();
             }
-        }
+        } 
         [HttpPost]
         public ActionResult SendMessage(int RecieverId, string Content)
         {
