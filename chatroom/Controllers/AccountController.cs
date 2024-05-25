@@ -93,33 +93,6 @@ namespace chatroom.Controllers
             return RedirectToAction("Login");
         }
 
-        //public Pagination<UserData> Test()
-        //{
-        //    using (var context = new chatroomEntities())
-        //    {
-        //        var userData = context.UserData.ToList();
-                
-        //        var result = new Pagination<UserData>();
-                
-        //        result.Records = userData;
-                
-        //        return result;
-        //    }
-        //}
-
-        //public Pagination<FriendRequests> Test2()
-        //{
-        //    using (var context = new chatroomEntities())
-        //    {
-        //        var friendRequests = context.FriendRequests.ToList();
-
-        //        var result = new Pagination<FriendRequests>();
-
-        //        result.Records = friendRequests;
-
-        //        return result;
-        //    }
-        //}
     }
 
 }

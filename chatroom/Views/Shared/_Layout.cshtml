@@ -6,18 +6,43 @@
     <title>@ViewBag.Title - Chatroom</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
-<link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
     <style>
-        body{
-            padding-top:0px;
-            padding-bottom:0px;
+        body {
+            padding-top: 60px;
+            padding-bottom: 0px;
+        }
+
+        .navbar-brand {
+            padding-right: 250px;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-link {
+            padding:0 15px 0 45px;
+        }
+
+            .nav-link i {
+                font-size: 1.2rem;
+            }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .dropdown-menu {
+            min-width: 200px;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/Home/My_Profile">Chatroom</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,12 +52,12 @@
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
+        <li class="nav-item">
+            <a class="nav-link" href="/Home/My_Profile" title="My Profile" >
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Home/My_Profile" title="My Profile">
-                                <i class="fa-solid fa-user"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
                             <a class="nav-link" href="/Home/GetAllUsers" title="All Users">
                                 <i class="fa-solid fa-users"></i>
                             </a>
@@ -43,39 +68,37 @@
                             </a>
                         </li>
                         <li class="nav-item">
-
                             <a class="nav-link" href="/Home/Friends_List" title="Friends List">
                                 <i class="fa-solid fa-user-group"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-right:450px;">
                             <a class="nav-link" href="/Home/PendingFriendRequests" title="Friend Requests">
                                 <i class="fa-solid fa-user-plus"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/Logout">LogOut</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-sign-out-alt">@User.Identity.Name</i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
+                            </ul>
                         </li>
-                        @*<form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Search friends" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>*@
-                    }
+ }
                     else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Home/About">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Home/Contact">Contact</a>
-                        </li>
-
-                    }
-                </ul>
-
+                  {
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/About">About</a>
+                </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/Home/Contact">Contact</a>
+                    </li>
+}              </ul>
             </div>
         </div>
     </nav>
+
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
     <div class="container body-content">
@@ -86,7 +109,6 @@
         </footer>
     </div>
 
-
     <script>
         document.querySelectorAll(".nav-link").forEach((link) => {
             if (link.href === window.location.href) {
@@ -95,7 +117,7 @@
             }
         });
     </script>
-    
+   
+
 </body>
 </html>
-

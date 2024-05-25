@@ -82,7 +82,7 @@
                         <div class="message-header">
                             <img src="@Url.Content("~/ProfileP/" + item.ProfilePicture)" alt="DP" width="80" height="80" style="border-radius:50px;" />
                             <strong>@Html.DisplayFor(modelItem => item.ReceiverName)</strong>
-                            <br />
+                            
                             @Html.DisplayFor(modelItem => item.Content)
                         </div>
                     </a>
@@ -116,6 +116,11 @@
                 });
             });
         });
+      
+
+      
+    </script>
+    <script>
         $(document).ready(function () {
             $('.message').click(function (e) {
                 e.preventDefault();
@@ -123,8 +128,6 @@
                 $(this).addClass('active');
             });
         });
-
-      
     </script>
 </body>
 </html>
