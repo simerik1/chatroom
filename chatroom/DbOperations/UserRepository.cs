@@ -148,23 +148,22 @@ namespace chatroom.DbOperations
             using (var context = new chatroomEntities())
             {
                 var friends_list = context.FriendRequests
-                    .Where(r => (r.ReceiverId == userId || r.SenderId == userId) && r.status == FriendRequestStatus.Accepted.ToString())
+                    .Where(r => r.ReceiverId == userId && r.status == FriendRequestStatus.Accepted.ToString())
                     .ToList();
 
                 var result = new List<FriendRequest>();
 
                 foreach (var request in friends_list)
                 {
-                    var friendId = request.SenderId == userId ? request.ReceiverId : request.SenderId;
-                    var friend = GetUserById(friendId);
-                    if (friend != null)
+                    var sender = GetUserById(request.SenderId);
+                    if (sender != null)
                     {
                         var friendRequest = new FriendRequest
                         {
-                            ProfilePicture = friend.ProfilePicture,
-                            SenderId = friend.Id,
-                            SenderName = $"{friend.FirstName} {friend.LastName}",
-                            ReceiverId = userId, 
+                            ProfilePicture = sender.ProfilePicture,
+                            SenderId = request.SenderId,
+                            SenderName = $"{sender.FirstName} {sender.LastName}",
+                            ReceiverId = request.ReceiverId,
                         };
                         result.Add(friendRequest);
                     }
@@ -172,7 +171,6 @@ namespace chatroom.DbOperations
                 return result;
             }
         }
-
         public bool AcceptedFriendRequests(int requestId, int userId)
         {
             var request = context.FriendRequests.FirstOrDefault(y => y.SenderId == requestId
@@ -262,25 +260,5 @@ namespace chatroom.DbOperations
             }
 
         }
-        public bool HasPendingFriendRequest(int senderId, int receiverId)
-        {
-            return context.FriendRequests.Any(fr => fr.SenderId == senderId && fr.ReceiverId == receiverId);
-        }
-        public bool Unfriend(int userId, int friendId)
-        {
-            var friendship = context.FriendRequests.FirstOrDefault(fr =>
-                (fr.SenderId == userId && fr.ReceiverId == friendId) ||
-                (fr.SenderId == friendId && fr.ReceiverId == userId));
-
-            if (friendship != null)
-            {
-                context.FriendRequests.Remove(friendship);
-                context.SaveChanges();
-                return true; 
-            }
-
-            return false;
-        }
-
     }
 }

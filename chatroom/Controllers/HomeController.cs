@@ -81,11 +81,7 @@ namespace chatroom.Controllers
                     TempData["Message"] = "You are already friends with this user.";
                     return RedirectToAction("GetAllUsers", "Home");
                 }
-                if (UserRepository.HasPendingFriendRequest(senderId, receiverId))
-                {
-                    TempData["Message"] = "A friend request has already been sent to this user.";
-                    return RedirectToAction("GetAllUsers", "Home");
-                }
+
 
 
                 UserRepository.SendFriendRequest(senderUser, receiverUser);
@@ -205,17 +201,9 @@ namespace chatroom.Controllers
             if (parts.Length == 2 && int.TryParse(parts[1], out userId))
             {
                 UserRepository userRepository = new UserRepository();
-                var unfriended = userRepository.Unfriend(userId, SenderId);
+                var befriends = userRepository.AcceptedFriendRequests(SenderId,userId);
 
-                if (unfriended)
-                {
-                    return RedirectToAction("Friends_List", "Home");
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "Failed to unfriend the user.";
-                    return RedirectToAction("Friends_List", "Home");
-                }
+                return RedirectToAction("Friends_List","Home");
             }
             else
             {
@@ -223,7 +211,6 @@ namespace chatroom.Controllers
                 return RedirectToAction("Friends_List", "Home");
             }
         }
-
         public ActionResult EditProfile()
         {
             int userId = 0;
@@ -361,6 +348,7 @@ namespace chatroom.Controllers
             {
                 var chats = UserRepository.UserChat(userId, chatId);
                 ViewBag.ChatId = chatId;
+                //TempData["PP"] = UserRepository.GetUserById(chatId).ProfilePicture;
 
                 ViewBag.RecieverName = UserRepository.GetUserById(chatId).FirstName.ToUpper() + " "+ UserRepository.GetUserById(chatId).LastName.ToUpper();
                 return View(chats);
